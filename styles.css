@@ -1,0 +1,48 @@
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Noto Naskh Arabic UI',Tahoma,sans-serif;background:#f6f7fb;color:#111}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#0d6efd;color:#fff;position:sticky;top:0;z-index:10}
+.brand{display:flex;gap:8px;align-items:center;font-weight:700}
+.status-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.status-dot.online{background:#22c55e}.status-dot.offline{background:#ef4444}
+.tabs{display:flex;gap:6px}
+.tabs .tab{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;cursor:pointer}
+.tabs .tab.active{background:#fff;color:#0d6efd}
+main{padding:12px}
+.tab-content{display:none}.tab-content.active{display:block}
+.pos{display:grid;grid-template-columns:1.2fr 1fr;gap:12px}
+.catalog{background:#fff;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.filters{display:flex;gap:8px;margin-bottom:10px}
+.filters input,.filters select{flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;max-height:70vh;overflow:auto}
+.product{border:1px solid #e5e7eb;border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;background:#fafafa}
+.product h4{margin:0;font-size:14px}
+.product .price{font-weight:700}
+.product button{margin-top:auto}
+.cart-area{background:#fff;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:10px}
+.cart-header{display:flex;justify-content:space-between;align-items:center}
+.cart-items{display:flex;flex-direction:column;gap:8px;max-height:45vh;overflow:auto}
+.cart-item{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;border-bottom:1px dashed #eee;padding-bottom:6px}
+.cart-item .qty{display:flex;gap:6px;align-items:center}
+.cart-summary{border-top:1px solid #eee;padding-top:8px;display:flex;flex-direction:column;gap:6px}
+.cart-summary .row{display:flex;justify-content:space-between;align-items:center}
+.cart-summary .row.total{font-size:18px}
+.discount{display:flex;gap:6px;align-items:center}
+.pay-actions{display:flex;gap:8px}
+button{padding:10px 12px;border:none;border-radius:10px;background:#e5e7eb;cursor:pointer}
+button.primary{background:#0d6efd;color:#fff}button.secondary{background:#6b7280;color:#fff}
+button.danger{background:#ef4444;color:#fff}button.ghost{background:transparent;border:1px solid #e5e7eb}
+.orders-toolbar,.products-toolbar{display:flex;gap:8px;margin-bottom:10px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+th,td{padding:10px;border-bottom:1px solid #f1f5f9;text-align:right}
+.settings-form{display:grid;gap:10px;max-width:600px;background:#fff;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.settings-form label{display:flex;flex-direction:column;gap:6px}
+.settings-form input, .settings-form textarea{padding:10px;border:1px solid #e5e7eb;border-radius:10px}
+.payment-form{min-width:280px}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.numpad button{padding:14px}
+@media (max-width: 900px){.pos{grid-template-columns:1fr}.grid{max-height:40vh}.cart-items{max-height:30vh}}
+/* print */
+@media print{
+  body{background:#fff}
+  header,nav,.tabs,.pos>.catalog,.pay-actions,#paymentDialog{display:none!important}
+  .receipt{font-family:ui-monospace,monospace;width:75mm}
+}

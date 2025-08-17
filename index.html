@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>كاشير المطعم</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#0d6efd">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span id="shopName">مطعمي</span>
+      <small id="onlineStatus" class="status-dot online" title="متصل"></small>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" data-tab="pos">نقطة البيع</button>
+      <button class="tab" data-tab="orders">الطلبات</button>
+      <button class="tab" data-tab="products">المنتجات</button>
+      <button class="tab" data-tab="settings">الإعدادات</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- POS Tab -->
+    <section id="tab-pos" class="tab-content active">
+      <div class="pos">
+        <aside class="catalog">
+          <div class="filters">
+            <input id="searchInput" type="search" placeholder="ابحث عن منتج…">
+            <select id="categoryFilter">
+              <option value="">كل الأصناف</option>
+            </select>
+          </div>
+          <div id="productGrid" class="grid"></div>
+        </aside>
+
+        <section class="cart-area">
+          <div class="cart-header">
+            <h2>السلة</h2>
+            <button id="clearCart" class="danger">تفريغ</button>
+          </div>
+          <div id="cartItems" class="cart-items"></div>
+          <div class="cart-summary">
+            <div class="row">
+              <label>الخصم</label>
+              <div class="discount">
+                <input id="discountValue" type="number" step="0.01" value="0">
+                <select id="discountType">
+                  <option value="fixed">مبلغ</option>
+                  <option value="percent">%</option>
+                </select>
+              </div>
+            </div>
+            <div class="row"><span>المجموع الفرعي</span><strong id="subtotal">0.00</strong></div>
+            <div class="row"><span>الضريبة</span><strong id="tax">0.00</strong></div>
+            <div class="row total"><span>الإجمالي</span><strong id="grandTotal">0.00</strong></div>
+          </div>
+          <div class="pay-actions">
+            <button id="payCash" class="primary">دفع نقدًا</button>
+            <button id="payCard" class="secondary">دفع بالبطاقة</button>
+            <button id="printLast" class="ghost">طباعة آخر فاتورة</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Orders Tab -->
+    <section id="tab-orders" class="tab-content">
+      <div class="orders-toolbar">
+        <input id="ordersSearch" type="search" placeholder="ابحث برقم الفاتورة أو التاريخ">
+        <button id="exportCSV">تصدير CSV</button>
+      </div>
+      <table id="ordersTable">
+        <thead>
+          <tr><th>رقم</th><th>التاريخ</th><th>الإجمالي</th><th>الطريقة</th><th>تفاصيل</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Products Tab -->
+    <section id="tab-products" class="tab-content">
+      <div class="products-toolbar">
+        <button id="addProduct">إضافة منتج</button>
+      </div>
+      <table id="productsTable">
+        <thead>
+          <tr><th>الاسم</th><th>السعر</th><th>التصنيف</th><th>الباركود</th><th>إجراءات</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Settings Tab -->
+    <section id="tab-settings" class="tab-content">
+      <form id="settingsForm" class="settings-form">
+        <label>اسم المتجر<input name="shopName" type="text" value="مطعمي"></label>
+        <label>العملة<input name="currency" type="text" value="ر.س"></label>
+        <label>نسبة الضريبة %<input name="taxRate" type="number" step="0.01" value="15"></label>
+        <label>رأس الفاتورة<textarea name="receiptHeader" rows="2">مطعمي - أهلاً وسهلاً</textarea></label>
+        <label>تذييل الفاتورة<textarea name="receiptFooter" rows="2">شكرًا لتعاملكم معنا</textarea></label>
+        <div class="row">
+          <button type="submit" class="primary">حفظ</button>
+          <button type="button" id="installBtn" class="secondary">تثبيت كتطبيق</button>
+          <button type="button" id="resetDemo" class="ghost danger">إعادة ضبط البيانات التجريبية</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Payment Modal -->
+  <dialog id="paymentDialog">
+    <form method="dialog" id="paymentForm" class="payment-form">
+      <h3 id="payTitle">الدفع</h3>
+      <p>الإجمالي المستحق: <strong id="dueAmount">0.00</strong></p>
+      <div id="cashArea" class="cash-area">
+        <label>المبلغ المستلم<input id="cashReceived" type="number" step="0.01" placeholder="0.00"></label>
+        <div>الباقي: <strong id="changeDue">0.00</strong></div>
+        <div class="numpad" id="numpad"></div>
+      </div>
+      <menu>
+        <button value="cancel">إلغاء</button>
+        <button id="confirmPay" value="default" class="primary">تأكيد</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <!-- Receipt (hidden for print) -->
+  <iframe id="receiptFrame" style="display:none;"></iframe>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
